@@ -1,35 +1,33 @@
 #!/usr/bin/env bash
 # Telecharge les modeles Qwen-Image 2.1 dans un arbre ComfyUI/models.
+# Utilise wget (present dans l'image worker-comfyui ; curl ne l'est PAS).
 # Usage :
-#   MODELS_DIR=/runpod-volume/ComfyUI/models ./download_models.sh        # 3 modeles (sans enhancer)
-#   WITH_PE=1 MODELS_DIR=/workspace/ComfyUI/models ./download_models.sh  # + modele PE (enhancer)
-#
-# A lancer :
-#   - sur un POD attache au network volume (recommande), ou
-#   - au build de l'image (voir Dockerfile).
+#   MODELS_DIR=/comfyui/models ./download_models.sh              # 3 modeles (sans enhancer)
+#   WITH_PE=1 MODELS_DIR=/comfyui/models ./download_models.sh    # + modele PE (enhancer)
 set -euo pipefail
 
-MODELS_DIR="${MODELS_DIR:-/runpod-volume/ComfyUI/models}"
+MODELS_DIR="${MODELS_DIR:-/comfyui/models}"
 BASE="https://huggingface.co/Comfy-Org/Qwen-Image-2.1/resolve/main"
-DL="curl -L --fail --retry 3 -C -"   # reprise si coupure
+# wget : -c reprise si coupure, --tries + timeout pour robustesse au build
+DL() { wget -c --tries=3 --timeout=60 -O "$1" "$2"; }
 
 mkdir -p "$MODELS_DIR"/{diffusion_models,text_encoders,vae}
 
 echo ">> diffusion_models"
-$DL -o "$MODELS_DIR/diffusion_models/qwen_image_2.1_int8_convrot.safetensors" \
+DL "$MODELS_DIR/diffusion_models/qwen_image_2.1_int8_convrot.safetensors" \
    "$BASE/diffusion_models/qwen_image_2.1_int8_convrot.safetensors"
 
 echo ">> text_encoders (qwen3vl 8b)"
-$DL -o "$MODELS_DIR/text_encoders/qwen3vl_8b_int8_convrot.safetensors" \
+DL "$MODELS_DIR/text_encoders/qwen3vl_8b_int8_convrot.safetensors" \
    "$BASE/text_encoders/qwen3vl_8b_int8_convrot.safetensors"
 
 echo ">> vae"
-$DL -o "$MODELS_DIR/vae/qwen_image_2.1_vae_bf16.safetensors" \
+DL "$MODELS_DIR/vae/qwen_image_2.1_vae_bf16.safetensors" \
    "$BASE/vae/qwen_image_2.1_vae_bf16.safetensors"
 
 if [ "${WITH_PE:-0}" = "1" ]; then
   echo ">> text_encoders (PE qwen3.5 9b — prompt enhancer)"
-  $DL -o "$MODELS_DIR/text_encoders/qwen3.5_9b_qwen_image_2.1_pe_i2i.int8_convrot.safetensors" \
+  DL "$MODELS_DIR/text_encoders/qwen3.5_9b_qwen_image_2.1_pe_i2i.int8_convrot.safetensors" \
      "$BASE/text_encoders/qwen3.5_9b_qwen_image_2.1_pe_i2i.int8_convrot.safetensors"
 fi
 
