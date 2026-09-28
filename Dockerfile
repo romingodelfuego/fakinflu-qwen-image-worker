@@ -10,7 +10,7 @@
 #   sinon decommente le bloc "mise a jour ComfyUI" ci-dessous.
 # Contrepartie : image de ~20 Go (les poids int8 sont dedans) et build long.
 
-ARG WORKER_TAG=5.11.0-base
+ARG WORKER_TAG=5.10.0-base
 FROM runpod/worker-comfyui:${WORKER_TAG}
 
 # --- (optionnel) forcer un ComfyUI recent si le tag est trop ancien ---------
