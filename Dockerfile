@@ -32,8 +32,9 @@ RUN uv pip install torch==2.11.0 torchvision==0.26.0 torchaudio==2.11.0 \
 RUN cd /comfyui && timeout 300 python main.py --quick-test-for-ci --cpu
 
 # --- BAKE des modeles Qwen-Image 2.1 ----------------------------------------
-# WITH_PE=1 pour inclure aussi le prompt-enhancer (4e modele).
-ARG WITH_PE=0
+# Prompt-enhancer (4e modele) inclus par defaut : Qwen 2.1 edit a cfg 1 attend
+# un prompt reecrit par le PE, sinon il recopie la reference (WITH_PE=0 pour s'en passer).
+ARG WITH_PE=1
 COPY download_models.sh /tmp/download_models.sh
 RUN MODELS_DIR=/comfyui/models WITH_PE=${WITH_PE} bash /tmp/download_models.sh
 
