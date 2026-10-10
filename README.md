@@ -39,7 +39,7 @@ depuis ce chat.
    - Build args : `WORKER_TAG=<tag ComfyUI ≥0.37.0>`, `WITH_PE=1` si tu veux l'enhancer.
    - RunPod build l'image (télécharge les modèles au build — plusieurs minutes).
 3. GPU **≥ 24 Go** (RTX 4090 / L40S / A6000), container disk ≥ 30 Go, **min workers 0**, FlashBoot on.
-4. Récupérer l'**Endpoint ID** → `fakinflu/.env` (`RUNPOD_FAKINFLU_ENDPOINT_ID`).
+4. Récupérer l'**Endpoint ID** → `fakinflu/.env` (`RUNPOD_COMFYUI_QWEN_ENDPOINT_ID`).
 
 **Voie alternative — build local + push (si tu as Docker + un registre)**
 ```bash
@@ -72,7 +72,7 @@ make local-down                             #   que si tu les montes en local �
 
 ## Pièges
 
-- **`✗ endpoint HTTP 404`** : mauvais `RUNPOD_FAKINFLU_ENDPOINT_ID`.
+- **`✗ endpoint HTTP 404`** : mauvais `RUNPOD_COMFYUI_QWEN_ENDPOINT_ID`.
 - **node `TextEncodeQwenImage21`/`QwenImage21Cache` inconnu** : ComfyUI < 0.37.0 → change `WORKER_TAG`.
 - **node `TextGenerate` inconnu** (seulement `ENHANCE=1`) : enhancer indispo sur ce build → reste en
   prompt direct, ou installe le pack, ou exporte le template officiel en API.
