@@ -6,11 +6,19 @@
   "endpoint": {
     "name": "fakinflu-qwen-image-worker",
     "env_var": "RUNPOD_COMFYUI_QWEN_ENDPOINT_ID",
-    "gpu_pools": ["AMPERE_16", "AMPERE_24"],
-    "workers": {"min": 0, "max": 3, "idleTimeout": 3},
+    "gpu_pools": [
+      "AMPERE_16",
+      "AMPERE_24"
+    ],
+    "workers": {
+      "min": 0,
+      "max": 3,
+      "idleTimeout": 3
+    },
     "timeout_ms": 600000,
     "flashboot": "OFF",
     "disk_gb": 5,
     "env": {}
-  }
+  },
+  "version": "v1.0.0"
 }
