@@ -7,8 +7,7 @@
     "name": "fakinflu-qwen-image-worker",
     "env_var": "RUNPOD_COMFYUI_QWEN_ENDPOINT_ID",
     "gpu_pools": [
-      "AMPERE_16",
-      "AMPERE_24"
+      "AMPERE_16"
     ],
     "workers": {
       "min": 0,
